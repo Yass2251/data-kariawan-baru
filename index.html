@@ -1,0 +1,211 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Coklat Nusantara - Sistem Pendataan Pegawai Baru</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+  <!-- Navbar -->
+  <nav class="navbar">
+    <div class="navbar-inner">
+      <div class="navbar-left">
+        <!-- Logo biji kakao sederhana -->
+        <div class="logo">
+          <svg width="34" height="34" viewBox="0 0 34 34" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <ellipse cx="17" cy="17" rx="13" ry="16" fill="#5C3A21" />
+            <ellipse cx="17" cy="17" rx="7" ry="11" fill="#8B5E3C" />
+            <path d="M17 6 C16 10 15.5 13.5 17 17 C18.5 20.5 18 24 17 28" stroke="#F7F1E8" stroke-width="1.2" stroke-linecap="round" opacity="0.85"/>
+            <path d="M13 10 C11.5 12 11 14.5 12.5 17" stroke="#5C3A21" stroke-width="1" stroke-linecap="round" opacity="0.6"/>
+            <path d="M21 11 C22.5 13 23 15.5 21.5 18" stroke="#5C3A21" stroke-width="1" stroke-linecap="round" opacity="0.6"/>
+            <path d="M23 4 C25 2.5 28 3 28 6 C28 8 25 9 23 7" fill="#7A9B6A" stroke="#5C3A21" stroke-width="0.7"/>
+            <path d="M23 4 C24.5 5 26 5.5 28 6" stroke="#5C3A21" stroke-width="0.5" stroke-linecap="round"/>
+          </svg>
+        </div>
+        <div class="brand">
+          <h1>Coklat Nusantara</h1>
+          <p>Sistem Pendataan Pegawai Baru</p>
+        </div>
+      </div>
+    </div>
+  </nav>
+
+  <!-- Konten Utama -->
+  <main class="container">
+    <div class="header-section">
+      <h2>Data Pegawai Baru</h2>
+      <p>Kelola dan simpan data pegawai baru dengan mudah.</p>
+    </div>
+
+    <!-- Ringkasan sederhana -->
+    <div class="summary">
+      <div class="card">
+        <div class="card-label">Total Pegawai Baru</div>
+        <div class="card-value" id="totalBaru">0</div>
+      </div>
+      <div class="card">
+        <div class="card-label">Pegawai Aktif</div>
+        <div class="card-value" id="totalAktif">0</div>
+      </div>
+      <div class="card">
+        <div class="card-label">Pegawai Kontrak</div>
+        <div class="card-value" id="totalKontrak">0</div>
+      </div>
+    </div>
+
+    <div class="toolbar">
+      <button id="btnTambah" class="btn btn-primary">+ Tambah Pegawai Baru</button>
+      <div class="toolbar-right">
+        <select id="filterStatus" class="filter-select">
+          <option value="">Semua Status</option>
+          <option value="Baru">Baru</option>
+          <option value="Aktif">Aktif</option>
+          <option value="Kontrak">Kontrak</option>
+          <option value="Magang">Magang</option>
+        </select>
+        <div class="search-wrap">
+          <input type="text" id="searchInput" placeholder="Cari nama pegawai...">
+        </div>
+      </div>
+    </div>
+
+    <div class="table-wrap">
+      <table>
+        <thead>
+          <tr>
+            <th>No</th>
+            <th>Nama</th>
+            <th>NIK</th>
+            <th>Jabatan</th>
+            <th>Departemen</th>
+            <th>Tanggal Masuk</th>
+            <th>Status</th>
+            <th>Aksi</th>
+          </tr>
+        </thead>
+        <tbody id="tableBody">
+          <!-- data diisi lewat JS -->
+        </tbody>
+      </table>
+      <div id="emptyState" class="empty-state" style="display:none;">
+        Data tidak ditemukan.
+      </div>
+    </div>
+  </main>
+
+  <!-- Modal Form Tambah / Edit -->
+  <div id="modal" class="modal-overlay" style="display:none;">
+    <div class="modal">
+      <div class="modal-header">
+        <h3 id="modalTitle">Tambah Pegawai Baru</h3>
+        <button id="btnCloseModal" class="btn-close">&times;</button>
+      </div>
+      <form id="formPegawai">
+        <div class="form-grid">
+          <div class="form-group">
+            <label for="nama">Nama Lengkap</label>
+            <input type="text" id="nama" required>
+          </div>
+          <div class="form-group">
+            <label for="nik">NIK</label>
+            <input type="text" id="nik" required placeholder="320101xxxx">
+          </div>
+          <div class="form-group">
+            <label for="jenisKelamin">Jenis Kelamin</label>
+            <select id="jenisKelamin" required>
+              <option value="">-- Pilih --</option>
+              <option value="Laki-laki">Laki-laki</option>
+              <option value="Perempuan">Perempuan</option>
+            </select>
+          </div>
+          <div class="form-group">
+            <label for="tempatLahir">Tempat Lahir</label>
+            <input type="text" id="tempatLahir" required placeholder="Contoh: Bandung">
+          </div>
+          <div class="form-group">
+            <label for="tanggalLahir">Tanggal Lahir</label>
+            <input type="date" id="tanggalLahir" required>
+          </div>
+          <div class="form-group">
+            <label for="hp">Nomor HP</label>
+            <input type="text" id="hp" required placeholder="08xxxxxxxxxx">
+          </div>
+          <div class="form-group">
+            <label for="email">Email</label>
+            <input type="email" id="email" required placeholder="nama@email.com">
+          </div>
+          <div class="form-group">
+            <label for="jabatan">Jabatan</label>
+            <input type="text" id="jabatan" required placeholder="Contoh: Staff Produksi">
+          </div>
+          <div class="form-group">
+            <label for="departemen">Departemen</label>
+            <select id="departemen" required>
+              <option value="">-- Pilih Departemen --</option>
+              <option value="Produksi">Produksi</option>
+              <option value="HRD">HRD</option>
+              <option value="Finance">Finance</option>
+              <option value="Marketing">Marketing</option>
+              <option value="Quality Control">Quality Control</option>
+            </select>
+          </div>
+          <div class="form-group">
+            <label for="tanggal">Tanggal Masuk</label>
+            <input type="date" id="tanggal" required>
+          </div>
+          <div class="form-group">
+            <label for="status">Status</label>
+            <select id="status" required>
+              <option value="">-- Pilih Status --</option>
+              <option value="Baru">Baru</option>
+              <option value="Aktif">Aktif</option>
+              <option value="Kontrak">Kontrak</option>
+              <option value="Magang">Magang</option>
+            </select>
+          </div>
+          <div class="form-group form-full">
+            <label for="alamat">Alamat</label>
+            <textarea id="alamat" rows="2" required placeholder="Alamat lengkap"></textarea>
+          </div>
+        </div>
+        <div class="modal-actions">
+          <button type="button" id="btnBatal" class="btn btn-secondary">Batal</button>
+          <button type="submit" class="btn btn-primary">Simpan</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <!-- Modal Detail Pegawai -->
+  <div id="modalDetail" class="modal-overlay" style="display:none;">
+    <div class="modal">
+      <div class="modal-header">
+        <h3>Detail Pegawai Baru</h3>
+        <button id="btnCloseDetail" class="btn-close">&times;</button>
+      </div>
+      <div id="detailContent" class="detail-content">
+        <!-- diisi JS -->
+      </div>
+      <div class="modal-actions" style="padding: 0 20px 16px;">
+        <button id="btnTutupDetail" class="btn btn-secondary">Tutup</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Modal Konfirmasi Hapus -->
+  <div id="modalHapus" class="modal-overlay" style="display:none;">
+    <div class="modal modal-small">
+      <h3>Konfirmasi Hapus</h3>
+      <p id="hapusText">Apakah Anda yakin ingin menghapus data ini?</p>
+      <div class="modal-actions">
+        <button id="btnBatalHapus" class="btn btn-secondary">Batal</button>
+        <button id="btnKonfirmasiHapus" class="btn btn-danger">Hapus</button>
+      </div>
+    </div>
+  </div>
+
+  <script src="script.js"></script>
+</body>
+</html>
